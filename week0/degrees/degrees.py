@@ -92,7 +92,7 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    start = Node(person_id_for_name(source), None, None)
+    start = Node(source, None, None)
     frontier = QueueFrontier()
     frontier.add(start)
     visited = set()
@@ -103,7 +103,7 @@ def shortest_path(source, target):
 
         node = frontier.remove()
 
-        if node.state == person_id_for_name(target):
+        if node.state == target:
             degrees = []
             while node.parent is not None:
                 degree = (node.action, node.state)
@@ -112,11 +112,11 @@ def shortest_path(source, target):
             degrees.reverse()
             return degrees
 
-        visited.add(node)
+        visited.add(node.state)
 
         for movie_id, person_id in neighbors_for_person(node.state):
-            if not frontier.contains_state(state) and state not in visited:
-                child = Node(state, node, movie_id)
+            if not frontier.contains_state(person_id) and person_id not in visited:
+                child = Node(person_id, node, movie_id)
                 frontier.add(child)
 
 
